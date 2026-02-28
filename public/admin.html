@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TKCLUB Admin</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',sans-serif;background:#0d0d1a;min-height:100vh;color:#eee}
+.ls{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;background:linear-gradient(135deg,#0d0d1a,#1a0a0a)}
+.lc{background:#1a1a2e;border-radius:16px;padding:32px 28px;width:100%;max-width:380px;border:1px solid #e74c3c30}
+.ll{text-align:center;font-size:26px;font-weight:900;margin-bottom:4px}.ll span{color:#e74c3c}
+.lb2{text-align:center;font-size:11px;color:#e74c3c;margin-bottom:20px}
+.f{margin-bottom:14px}.f label{font-size:10px;color:#666;margin-bottom:4px;display:block;text-transform:uppercase}
+.f input{width:100%;padding:11px 14px;background:#0d0d1a;border:1.5px solid #e74c3c20;border-radius:8px;color:#eee;font-size:14px;outline:none}
+.f input:focus{border-color:#e74c3c}
+.lbtn{width:100%;padding:13px;background:linear-gradient(135deg,#e74c3c,#c0392b);border:none;border-radius:8px;color:white;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px}
+.lerr{color:#e74c3c;font-size:12px;text-align:center;margin-top:10px}
+.lhint{text-align:center;color:#333;font-size:10px;margin-top:12px}
+.db{display:none;min-height:100vh}
+.sb{width:200px;background:#1a1a2e;position:fixed;top:0;left:0;height:100vh;padding:16px 0;border-right:1px solid #e74c3c15;z-index:100;overflow-y:auto}
+.sl{padding:10px 16px 20px;font-size:17px;font-weight:900;border-bottom:1px solid #e74c3c15;margin-bottom:8px}.sl span{color:#e74c3c}
+.sbg{font-size:9px;background:#e74c3c;color:white;padding:1px 5px;border-radius:4px;margin-left:4px}
+.ni{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;color:#666;font-size:13px;transition:all .2s;border-left:3px solid transparent}
+.ni:hover{background:#e74c3c08;color:#ccc}
+.ni.active{color:#e74c3c;border-left-color:#e74c3c;background:#e74c3c10}
+.nib{font-size:15px;width:20px;text-align:center}
+.nb2{position:absolute;bottom:16px;left:0;right:0;padding:0 14px}
+.logb{width:100%;padding:9px;background:#e74c3c15;border:1px solid #e74c3c30;color:#e74c3c;border-radius:8px;cursor:pointer;font-size:12px}
+.mc{margin-left:200px;padding:20px;min-height:100vh}
+.ph{margin-bottom:18px}.pt{font-size:20px;font-weight:700}.ps{font-size:11px;color:#555;margin-top:2px}
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:18px}
+.sc{background:#1a1a2e;border-radius:10px;padding:14px;border:1px solid #ffffff05;position:relative;overflow:hidden}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.sc.r::before{background:linear-gradient(90deg,#e74c3c,#c0392b)}.sc.g::before{background:linear-gradient(90deg,#2ecc71,#27ae60)}.sc.b::before{background:linear-gradient(90deg,#3498db,#2980b9)}.sc.o::before{background:linear-gradient(90deg,#f39c12,#e67e22)}.sc.v::before{background:linear-gradient(90deg,#9b59b6,#8e44ad)}
+.sv{font-size:22px;font-weight:700;margin-bottom:3px}
+.sc.r .sv{color:#e74c3c}.sc.g .sv{color:#2ecc71}.sc.b .sv{color:#3498db}.sc.o .sv{color:#f39c12}.sc.v .sv{color:#9b59b6}
+.slb{font-size:10px;color:#555}
+.cd{background:#1a1a2e;border-radius:10px;padding:16px;margin-bottom:14px;border:1px solid #ffffff05}
+.ct{font-size:13px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.ct::before{content:'';width:3px;height:15px;background:#e74c3c;border-radius:2px;flex-shrink:0}
+.sec{display:none}.sec.active{display:block}
+.npg{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px}
+.np{aspect-ratio:1;border-radius:50%;border:2px solid transparent;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;cursor:pointer;color:white;transition:all .2s}
+.np:hover{transform:scale(1.05)}
+.np.sel{border-color:#f39c12!important;transform:scale(1.12);box-shadow:0 0 14px #f39c12aa}
+.nrv{background:linear-gradient(135deg,#e74c3c 50%,#9b59b6 50%)}.nrd{background:radial-gradient(circle,#e74c3c,#c0392b)}.ngv{background:linear-gradient(135deg,#2ecc71 50%,#9b59b6 50%)}.ngn{background:radial-gradient(circle,#2ecc71,#27ae60)}
+.ib{background:#0d0d1a;border-radius:8px;padding:10px 12px;font-size:11px;color:#555;line-height:1.8;margin-bottom:12px;border:1px solid #ffffff05}
+.setb{width:100%;padding:11px;background:linear-gradient(135deg,#e74c3c,#c0392b);border:none;border-radius:8px;color:white;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:8px}
+.setb:disabled{background:#222;color:#444;cursor:not-allowed}
+.clrb{width:100%;padding:9px;background:transparent;border:1px solid #333;border-radius:8px;color:#666;font-size:12px;cursor:pointer}
+.stb{padding:9px 12px;border-radius:8px;font-size:12px;text-align:center;margin-top:8px;display:none}
+.stb.pend{background:#f39c1215;border:1px solid #f39c1240;color:#f39c12;display:block}
+.stb.ok{background:#2ecc7115;border:1px solid #2ecc7140;color:#2ecc71;display:block}
+.lt{background:#0d0d1a;border-radius:8px;padding:12px;text-align:center;margin-bottom:12px;border:1px solid #e74c3c20}
+.tbg{font-size:34px;font-weight:900;color:#e74c3c;font-family:monospace;letter-spacing:3px}
+.tpr{font-size:10px;color:#444;margin-top:4px}
+.tpn{font-size:11px;color:#f39c12;margin-top:5px;min-height:16px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{text-align:left;padding:8px 10px;color:#444;font-weight:600;font-size:10px;border-bottom:1px solid #e74c3c15;text-transform:uppercase}
+td{padding:8px 10px;border-bottom:1px solid #ffffff04;vertical-align:middle}
+tr:hover td{background:#ffffff02}
+.tw{overflow-x:auto}
+.badge{padding:2px 7px;border-radius:8px;font-size:10px;font-weight:600;display:inline-block}
+.brd{background:#e74c3c25;color:#e74c3c}.bgn{background:#2ecc7125;color:#2ecc71}.bbl{background:#3498db25;color:#3498db}.bor{background:#f39c1225;color:#f39c12}.bvl{background:#9b59b625;color:#9b59b6}.bgr{background:#ffffff10;color:#888}
+.nm{width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;vertical-align:middle}
+.av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#e74c3c,#9b59b6);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white;vertical-align:middle;margin-right:5px}
+.fr{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.si{padding:7px 10px;background:#0d0d1a;border:1px solid #e74c3c20;border-radius:6px;color:#eee;font-size:12px;outline:none;width:180px}
+.si:focus{border-color:#e74c3c}
+.sel2{padding:7px 10px;background:#0d0d1a;border:1px solid #e74c3c20;border-radius:6px;color:#888;font-size:12px;outline:none}
+.rfb{padding:5px 10px;background:#0d0d1a;border:1px solid #e74c3c20;border-radius:6px;color:#555;cursor:pointer;font-size:11px;margin-left:auto}
+.br2{display:flex;gap:5px;align-items:center}
+.bi{width:80px;padding:5px 7px;background:#0d0d1a;border:1px solid #e74c3c20;border-radius:5px;color:#eee;font-size:11px;outline:none}
+.badd{padding:4px 8px;border:none;border-radius:5px;font-size:10px;font-weight:600;cursor:pointer;background:#2ecc7120;color:#2ecc71;border:1px solid #2ecc7130}
+.bsub{padding:4px 8px;border:none;border-radius:5px;font-size:10px;font-weight:600;cursor:pointer;background:#e74c3c20;color:#e74c3c;border:1px solid #e74c3c30}
+.bset{padding:4px 8px;border:none;border-radius:5px;font-size:10px;font-weight:600;cursor:pointer;background:#3498db20;color:#3498db;border:1px solid #3498db30}
+.fi{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+.fi label{font-size:11px;color:#666;width:120px;flex-shrink:0}
+.finp{flex:1;padding:8px 12px;background:#0d0d1a;border:1.5px solid #e74c3c15;border-radius:6px;color:#eee;font-size:13px;outline:none}
+.finp:focus{border-color:#e74c3c}
+.svb{padding:9px 18px;background:linear-gradient(135deg,#e74c3c,#c0392b);border:none;border-radius:8px;color:white;font-size:13px;font-weight:700;cursor:pointer}
+.dgr{padding:9px 16px;background:#e74c3c12;border:1px solid #e74c3c35;border-radius:8px;color:#e74c3c;font-size:12px;cursor:pointer;margin-right:8px;margin-bottom:8px}
+@media(max-width:640px){.sb{width:100%;height:auto;position:relative;display:flex;flex-direction:row;overflow-x:auto;padding:0;border-right:none;border-bottom:1px solid #e74c3c15}.sl{display:none}.ni{flex-direction:column;padding:9px 10px;border-left:none;border-bottom:3px solid transparent;font-size:10px;white-space:nowrap;gap:3px;min-width:55px}.ni.active{border-bottom-color:#e74c3c;border-left-color:transparent}.nib{font-size:16px}.nb2{display:none}.mc{margin-left:0}}
+</style>
+</head>
+<body>
+<div class="ls" id="ls">
+  <div class="lc">
+    <div class="ll">TK<span>CLUB</span></div>
+    <div class="lb2">🔐 Admin Panel</div>
+    <div class="f"><label>Username</label><input type="text" id="au" placeholder="admin" onkeyup="if(event.key==='Enter')login()"></div>
+    <div class="f"><label>Password</label><input type="password" id="ap" placeholder="••••••••" onkeyup="if(event.key==='Enter')login()"></div>
+    <button class="lbtn" onclick="login()">Login to Admin Panel</button>
+    <div class="lerr" id="le"></div>
+    <div class="lhint">Default: admin / admin123</div>
+  </div>
+</div>
+
+<div class="db" id="db">
+  <div class="sb">
+    <div class="sl">TK<span>CLUB</span> <span class="sbg">ADMIN</span></div>
+    <div class="ni active" onclick="gs(this,'overview')"><span class="nib">📊</span>Overview</div>
+    <div class="ni" onclick="gs(this,'result')"><span class="nib">🎯</span>Result Control</div>
+    <div class="ni" onclick="gs(this,'history')"><span class="nib">📋</span>Game History</div>
+    <div class="ni" onclick="gs(this,'users')"><span class="nib">👥</span>Users</div>
+    <div class="ni" onclick="gs(this,'bets')"><span class="nib">💰</span>Bet History</div>
+    <div class="ni" onclick="gs(this,'settings')"><span class="nib">⚙️</span>Settings</div>
+    <div class="nb2"><button class="logb" onclick="alogout()">Logout</button></div>
+  </div>
+  <div class="mc">
+
+    <!-- OVERVIEW -->
+    <div class="sec active" id="sec-overview">
+      <div class="ph"><div class="pt">📊 Overview</div><div class="ps">Real-time statistics</div></div>
+      <div class="sg" id="sg"></div>
+      <div class="cd"><div class="ct">Recent Results</div><div class="tw"><table><thead><tr><th>Period</th><th>Number</th><th>Color</th><th>Big/Small</th></tr></thead><tbody id="oh"></tbody></table></div></div>
+    </div>
+
+    <!-- RESULT CONTROL -->
+    <div class="sec" id="sec-result">
+      <div class="ph"><div class="pt">🎯 Result Control</div><div class="ps">Force next round outcome</div></div>
+      <div class="cd"><div class="ct">Live Timer</div>
+        <div class="lt"><div class="tbg" id="atd">—</div><div class="tpr" id="apd">Period: —</div><div class="tpn" id="pnd"></div></div>
+      </div>
+      <div class="cd"><div class="ct">Set Next Result</div>
+        <div class="ib">ℹ️ Pick a number → Set to force the next result.<br>🔴 0=Red+Violet | 🟢 5=Green+Violet | Odd=Green | Even=Red</div>
+        <div class="npg">
+          <div class="np nrv" onclick="pn(this,0)">0</div><div class="np ngn" onclick="pn(this,1)">1</div>
+          <div class="np nrd" onclick="pn(this,2)">2</div><div class="np ngn" onclick="pn(this,3)">3</div>
+          <div class="np nrd" onclick="pn(this,4)">4</div><div class="np ngv" onclick="pn(this,5)">5</div>
+          <div class="np nrd" onclick="pn(this,6)">6</div><div class="np ngn" onclick="pn(this,7)">7</div>
+          <div class="np nrd" onclick="pn(this,8)">8</div><div class="np ngn" onclick="pn(this,9)">9</div>
+        </div>
+        <button class="setb" id="setb" onclick="setRes()" disabled>Select a number first</button>
+        <button class="clrb" onclick="clrRes()">Clear — Use Random</button>
+        <div class="stb" id="stb"></div>
+      </div>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="sec" id="sec-history">
+      <div class="ph"><div class="pt">📋 Game History</div><div class="ps">All round results</div></div>
+      <div class="cd"><div class="ct">Results <button class="rfb" onclick="rgh()">⟳ Refresh</button></div>
+        <div class="fr"><input class="si" type="text" id="hs" placeholder="Search period..." oninput="rgh()"></div>
+        <div class="tw"><table><thead><tr><th>Period</th><th>Number</th><th>Color</th><th>Big/Small</th></tr></thead><tbody id="hb"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- USERS -->
+    <div class="sec" id="sec-users">
+      <div class="ph"><div class="pt">👥 Users</div><div class="ps">Manage registered users</div></div>
+      <div class="cd"><div class="ct">User List <button class="rfb" onclick="ru()">⟳ Refresh</button></div>
+        <div class="fr"><input class="si" type="text" id="us" placeholder="Search user..." oninput="ru()"></div>
+        <div class="tw"><table><thead><tr><th>User</th><th>Mobile</th><th>Balance</th><th>Joined</th><th>Manage Balance</th></tr></thead><tbody id="ub"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- BETS -->
+    <div class="sec" id="sec-bets">
+      <div class="ph"><div class="pt">💰 Bet History</div><div class="ps">All bets from all users</div></div>
+      <div class="cd"><div class="ct">All Bets <button class="rfb" onclick="rb()">⟳ Refresh</button></div>
+        <div class="fr">
+          <input class="si" type="text" id="bs2" placeholder="Search user/period..." oninput="rb()">
+          <select class="sel2" id="bsf" onchange="rb()"><option value="">All</option><option value="pending">Pending</option><option value="win">Win</option><option value="lose">Lose</option></select>
+        </div>
+        <div class="tw"><table><thead><tr><th>User</th><th>Period</th><th>Bet</th><th>Amount</th><th>Result</th><th>Status</th><th>Time</th></tr></thead><tbody id="bb2"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="sec" id="sec-settings">
+      <div class="ph"><div class="pt">⚙️ Settings</div><div class="ps">Admin configuration</div></div>
+      <div class="cd"><div class="ct">Change Admin Password</div>
+        <div class="fi"><label>New Username</label><input class="finp" type="text" id="nau" placeholder="admin"></div>
+        <div class="fi"><label>Current Password</label><input class="finp" type="password" id="cp" placeholder="current password"></div>
+        <div class="fi"><label>New Password</label><input class="finp" type="password" id="nap" placeholder="min 6 characters"></div>
+        <button class="svb" onclick="saveCreds()">Save</button>
+      </div>
+      <div class="cd"><div class="ct">Danger Zone</div>
+        <button class="dgr" onclick="delHist()">⚠️ Clear Game History</button>
+        <button class="dgr" onclick="delBets()">⚠️ Clear All Bets</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const API=window.location.origin;
+let atoken=localStorage.getItem('tk_admin_token');
+
+async function af2(ep,o={}){
+  if(atoken)o.headers={...(o.headers||{}),Authorization:'Bearer '+atoken};
+  const r=await fetch(API+ep,o);return r.json();
+}
+
+async function login(){
+  const u=document.getElementById('au').value.trim(),p=document.getElementById('ap').value;
+  const r=await af2('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p})});
+  if(r.error){document.getElementById('le').textContent='❌ '+r.error;return;}
+  atoken=r.token;localStorage.setItem('tk_admin_token',atoken);
+  document.getElementById('ls').style.display='none';document.getElementById('db').style.display='block';
+  init();
+}
+function alogout(){localStorage.removeItem('tk_admin_token');location.reload();}
+if(atoken){
+  af2('/api/admin/stats').then(r=>{
+    if(r.error){localStorage.removeItem('tk_admin_token');atoken=null;}
+    else{document.getElementById('ls').style.display='none';document.getElementById('db').style.display='block';init();}
+  });
+}
+
+function gs(el,sec){
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));el.classList.add('active');
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+sec).classList.add('active');
+  if(sec==='overview')rov();if(sec==='history')rgh();if(sec==='users')ru();if(sec==='bets')rb();
+}
+
+function bb(n){if(n===0)return'linear-gradient(135deg,#e74c3c 50%,#9b59b6 50%)';if(n===5)return'linear-gradient(135deg,#2ecc71 50%,#9b59b6 50%)';return n%2===0?'radial-gradient(circle,#e74c3c,#c0392b)':'radial-gradient(circle,#2ecc71,#27ae60)';}
+function gcb(n){
+  if(n===0)return'<span class="badge brd">Red</span><span class="badge bvl">Violet</span>';
+  if(n===5)return'<span class="badge bgn">Green</span><span class="badge bvl">Violet</span>';
+  if(n%2===0)return'<span class="badge brd">Red</span>';return'<span class="badge bgn">Green</span>';
+}
+function gcl(n){if(n===0)return'Red/Violet';if(n===5)return'Green/Violet';return n%2===0?'Red':'Green';}
+
+async function rov(){
+  const s=await af2('/api/admin/stats');
+  const h=await af2('/api/admin/history');
+  document.getElementById('sg').innerHTML=`
+    <div class="sc r"><div class="sv">${s.totalRounds||0}</div><div class="slb">Total Rounds</div></div>
+    <div class="sc g"><div class="sv">${s.totalUsers||0}</div><div class="slb">Total Users</div></div>
+    <div class="sc b"><div class="sv">${s.totalBets||0}</div><div class="slb">Total Bets</div></div>
+    <div class="sc o"><div class="sv">৳${parseFloat(s.totalBetAmount||0).toFixed(0)}</div><div class="slb">Total Bet Amount</div></div>
+    <div class="sc g"><div class="sv">${s.wins||0}</div><div class="slb">Wins</div></div>
+    <div class="sc r"><div class="sv">${s.losses||0}</div><div class="slb">Losses</div></div>`;
+  if(Array.isArray(h)){
+    document.getElementById('oh').innerHTML=h.slice(0,10).map(r=>`<tr>
+      <td style="color:#555;font-size:10px">${r.period}</td>
+      <td><div class="nm" style="background:${bb(r.number)}">${r.number}</div></td>
+      <td>${gcb(r.number)}</td>
+      <td><span class="badge ${r.size==='Big'?'bor':'bbl'}">${r.size}</span></td>
+    </tr>`).join('')||'<tr><td colspan="4" style="text-align:center;color:#333;padding:16px">No data</td></tr>';
+  }
+  if(s.nextResult!==null&&s.nextResult!==undefined){
+    document.getElementById('pnd').textContent='🎯 Locked: '+s.nextResult+' ('+gcl(parseInt(s.nextResult))+')';
+  } else {
+    document.getElementById('pnd').textContent='';
+  }
+}
+
+async function rgh(){
+  const q=(document.getElementById('hs')?.value||'').toLowerCase();
+  const h=await af2('/api/admin/history');
+  if(!Array.isArray(h))return;
+  const filtered=h.filter(r=>!q||r.period.includes(q));
+  document.getElementById('hb').innerHTML=filtered.slice(0,60).map(r=>`<tr>
+    <td style="color:#555;font-size:10px">${r.period}</td>
+    <td><div class="nm" style="background:${bb(r.number)}">${r.number}</div></td>
+    <td>${gcb(r.number)}</td>
+    <td><span class="badge ${r.size==='Big'?'bor':'bbl'}">${r.size}</span></td>
+  </tr>`).join('')||'<tr><td colspan="4" style="text-align:center;color:#333;padding:16px">No history</td></tr>';
+}
+
+async function ru(){
+  const q=(document.getElementById('us')?.value||'').toLowerCase();
+  const users=await af2('/api/admin/users');
+  if(!Array.isArray(users))return;
+  const fl=users.filter(u=>!q||u.username.toLowerCase().includes(q)||(u.mobile||'').includes(q));
+  document.getElementById('ub').innerHTML=fl.map(u=>`<tr>
+    <td><div class="av">${u.username[0].toUpperCase()}</div>${u.username}</td>
+    <td style="color:#555">${u.mobile||'—'}</td>
+    <td style="color:#f39c12;font-weight:700">৳${parseFloat(u.balance).toFixed(2)}</td>
+    <td style="color:#444;font-size:10px">${u.created_at?new Date(u.created_at).toLocaleDateString('en'):'—'}</td>
+    <td><div class="br2">
+      <input class="bi" type="number" id="bi_${u.id}" placeholder="amount" min="0" step="0.01">
+      <button class="badd" onclick="eb(${u.id},'add')">+Add</button>
+      <button class="bsub" onclick="eb(${u.id},'sub')">-Sub</button>
+      <button class="bset" onclick="eb(${u.id},'set')">Set</button>
+    </div></td>
+  </tr>`).join('')||'<tr><td colspan="5" style="text-align:center;color:#333;padding:16px">No users</td></tr>';
+}
+async function eb(uid,action){
+  const inp=document.getElementById('bi_'+uid);
+  const amount=parseFloat(inp.value);
+  if(isNaN(amount)||amount<0){alert('Enter valid amount');return;}
+  const r=await af2('/api/admin/users/'+uid+'/balance',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,amount})});
+  if(r.error){alert(r.error);return;}
+  inp.value='';ru();
+}
+
+async function rb(){
+  const q=(document.getElementById('bs2')?.value||'').toLowerCase();
+  const sf=document.getElementById('bsf')?.value||'';
+  let url='/api/admin/bets?';
+  if(sf)url+='status='+sf+'&';
+  if(q)url+='username='+q;
+  const bets=await af2(url);
+  if(!Array.isArray(bets))return;
+  document.getElementById('bb2').innerHTML=bets.map(b=>{
+    const rd=b.result!==null?`<div class="nm" style="background:${bb(b.result)}">${b.result}</div>`:'<span style="color:#333">—</span>';
+    const sb2=b.status==='win'?'<span class="badge bgn">Win</span>':b.status==='lose'?'<span class="badge brd">Lose</span>':'<span class="badge bor">Pending</span>';
+    const t=b.created_at?new Date(b.created_at).toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'}):'—';
+    return`<tr>
+      <td><div class="av" style="width:22px;height:22px;font-size:10px">${b.username[0].toUpperCase()}</div>${b.username}</td>
+      <td style="color:#444;font-size:10px">${b.period}</td>
+      <td><span class="badge bgr">${b.bet}</span></td>
+      <td style="color:#f39c12;font-weight:600">৳${parseFloat(b.amount).toFixed(2)}</td>
+      <td>${rd}</td><td>${sb2}</td>
+      <td style="color:#333;font-size:10px">${t}</td>
+    </tr>`;
+  }).join('')||'<tr><td colspan="7" style="text-align:center;color:#333;padding:16px">No bets</td></tr>';
+}
+
+let snum=null;
+function pn(el,n){
+  document.querySelectorAll('.np').forEach(p=>p.classList.remove('sel'));
+  el.classList.add('sel');snum=n;
+  const b=document.getElementById('setb');b.disabled=false;
+  b.textContent='🎯 Set Result: '+n+' ('+gcl(n)+')';
+}
+async function setRes(){
+  if(snum===null)return;
+  const r=await af2('/api/admin/set-result',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({number:snum})});
+  const sb=document.getElementById('stb');
+  if(r.error){sb.textContent='❌ '+r.error;sb.className='stb pend';return;}
+  sb.textContent='⏳ Locked: '+snum+' ('+gcl(snum)+') — applies next round';sb.className='stb pend';
+}
+async function clrRes(){
+  await af2('/api/admin/set-result',{method:'DELETE'});
+  document.querySelectorAll('.np').forEach(p=>p.classList.remove('sel'));
+  snum=null;document.getElementById('setb').disabled=true;document.getElementById('setb').textContent='Select a number first';
+  const sb=document.getElementById('stb');sb.textContent='✓ Cleared — next result random';sb.className='stb ok';
+}
+
+async function saveCreds(){
+  const u=document.getElementById('nau').value.trim(),cp2=document.getElementById('cp').value,np2=document.getElementById('nap').value;
+  if(!u||!cp2||!np2||np2.length<6){alert('Fill all fields. Password min 6 chars.');return;}
+  alert('Note: Password change requires server restart to take effect. Update your .env file: ADMIN_PASS='+np2);
+}
+async function delHist(){
+  if(!confirm('Clear ALL game history?'))return;
+  await af2('/api/admin/history',{method:'DELETE'});rgh();alert('Done!');
+}
+async function delBets(){
+  if(!confirm('Clear ALL bets?'))return;
+  // No endpoint for this yet - inform user
+  alert('Please delete manually from server for now.');
+}
+
+// Auto-refresh stats every 5s
+setInterval(async()=>{
+  const s=await af2('/api/admin/stats');
+  if(s.nextResult!==null&&s.nextResult!==undefined){
+    document.getElementById('pnd').textContent='🎯 Locked: '+s.nextResult+' ('+gcl(parseInt(s.nextResult))+')';
+    const sb=document.getElementById('stb');
+    if(sb.className!=='stb ok')sb.textContent='⏳ Pending: '+s.nextResult+' ('+gcl(parseInt(s.nextResult))+')';
+  } else {
+    document.getElementById('pnd').textContent='';
+  }
+},5000);
+
+function init(){rov();}
+</script>
+</body>
+</html>
