@@ -1,0 +1,18 @@
+{
+  "name": "tkclub-wingo",
+  "version": "1.0.0",
+  "description": "TKCLUB Win Go Game Backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "better-sqlite3": "^9.4.3",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "ws": "^8.16.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5"
+  }
+}
